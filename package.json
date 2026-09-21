@@ -9,15 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.6",
-    "@react-three/fiber": "^9.3.0",
-    "@react-three/rapier": "^2.1.0",
-    "meshline": "^3.3.1",
-    "three": "^0.179.1",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "@paper-design/shaders-react": "^0.0.81",
+    "gsap": "^3.13.0",
     "motion": "^12.23.12",
-    "gsap": "^3.13.0"
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.6.0",

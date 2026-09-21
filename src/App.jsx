@@ -8,13 +8,13 @@ import sertifikat7 from "./certificates/certificates7.jpeg";
 import sertifikat8 from "./certificates/certificates8.jpeg";
 import sertifikat9 from "./certificates/certificates9.jpeg";
 
-import profileImage from "./assets/lanyard/frhn5.jpeg";
+import profileImage from "./assets/frhn5.jpeg";
+import gdscAnimation from "./assets/GDSC-Modules.json";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import PulsatingBorder from "./components/PulsatingBorder";
 
-import ShinyText from "./components/ShinyText";
-import Lanyard from "./components/Lanyard";
 import TextType from "./components/TextType";
 
 import "./index.css";
@@ -26,13 +26,15 @@ const projects = [
     description:
       "Personal hub untuk berbagai kebutuhan sehari-hari dengan fokus pada UI yang rapi dan interaktif.",
     tech: ["HTML", "CSS", "JavaScript"],
+    image: "src/components/projects/myhub1.png",
   },
   {
-    title: "MyHub V2",
+    title: "Portfolio",
     type: "React Project",
     description:
-      "Versi lanjutan MyHub dengan React, Vite, komponen interaktif, dan tampilan glass modern.",
+      "Lihat berbagai project, pencapaian, dan teknologi yang saya gunakan untuk membangun pengalaman digital yang modern dan interaktif.",
     tech: ["React", "Vite", "Motion"],
+    image: "src/components/projects/portfolio.png",
   },
   {
     title: "X PPLG 1",
@@ -40,6 +42,7 @@ const projects = [
     description:
       "Website informasi kelas untuk struktur, anggota, jadwal, galeri, dan media sosial.",
     tech: ["HTML", "CSS", "JavaScript"],
+    image: "src/components/projects/kelas1.png",
   },
 ];
 
@@ -56,16 +59,16 @@ const certificates = [
 ];
 
 const techStack = [
-  ["HTML", "Web structure", "https://cdn.simpleicons.org/html5"],
-  ["CSS", "UI styling", "https://cdn.simpleicons.org/css3"],
-  ["JavaScript", "Web logic", "https://cdn.simpleicons.org/javascript"],
-  ["React", "UI development", "https://cdn.simpleicons.org/react"],
-  ["Vite", "Build tooling", "https://cdn.simpleicons.org/vite"],
-  ["Motion", "Animation", "https://cdn.simpleicons.org/framer"],
-  ["Three.js", "3D graphics", "https://cdn.simpleicons.org/threedotjs"],
-  ["React Three Fiber", "3D React", "https://cdn.simpleicons.org/react"],
-  ["Git", "Version control", "https://cdn.simpleicons.org/git"],
-  ["GitHub", "Deployment", "https://cdn.simpleicons.org/github/ffffff"],
+  ["HTML", "https://cdn.simpleicons.org/html5"],
+  ["CSS", "https://cdn.simpleicons.org/css3"],
+  ["JavaScript", "https://cdn.simpleicons.org/javascript"],
+  ["React", "https://cdn.simpleicons.org/react"],
+  ["Vite", "https://cdn.simpleicons.org/vite"],
+  ["Motion", "https://cdn.simpleicons.org/framer"],
+  ["Three.js", "https://cdn.simpleicons.org/threedotjs"],
+  ["React Three Fiber", "https://cdn.simpleicons.org/react"],
+  ["Git", "https://cdn.simpleicons.org/git"],
+  ["GitHub", "https://cdn.simpleicons.org/github/ffffff"],
 ];
 
 const socials = [
@@ -95,13 +98,43 @@ const socials = [
   },
 ];
 
-const nav = ["home", "about", "showcase", "contact"];
+const navItems = ["home", "about", "showcase", "contact"];
 const showcaseTabs = ["projects", "certificates", "stack"];
+
+function GdscLottie() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !window.lottie) return;
+
+    const animation = window.lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData: gdscAnimation,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid meet",
+      },
+    });
+
+    return () => animation.destroy();
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="lottie-animation"
+      aria-label="GDSC animation"
+    />
+  );
+}
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
   const [showcaseTab, setShowcaseTab] = useState("projects");
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -111,11 +144,6 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  /*
-   * Scroll animation.
-   * Saat elemen keluar viewport, class aos-visible dihapus.
-   * Jadi ketika discroll kembali, animasinya jalan lagi.
-   */
   useEffect(() => {
     const targets = document.querySelectorAll("[data-aos]");
 
@@ -132,12 +160,26 @@ function App() {
       {
         threshold: 0.12,
         rootMargin: "0px 0px -70px 0px",
-      }
+      },
     );
 
     targets.forEach((target) => observer.observe(target));
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setSelectedCertificate(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
   }, []);
 
   const goTo = (id) => {
@@ -160,41 +202,39 @@ function App() {
             transition={{ duration: 0.7 }}
           >
             <motion.div
-              className="opening-line"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{
-                duration: 1.1,
-                ease: "easeInOut",
-              }}
-            />
-
-            <motion.div
               className="opening-content"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <span className="opening-kicker">
-                PORTFOLIO / 2026
-              </span>
+              <div className="opening-icons">
+                <div className="opening-icon code-icon">{"</>"}</div>
 
-              <div className="opening-logo">F</div>
+                <div className="opening-icon">
+                  <span className="server-icon">
+                    <i />
+                    <i />
+                  </span>
+                </div>
 
-              <h1>frhnn</h1>
+                <div className="opening-icon">
+                  <span className="globe-icon">◎</span>
+                </div>
+              </div>
 
-              <ShinyText
-                text="Welcome to my portfolio"
-                speed={2}
-                delay={0}
-                color="#94a3b8"
-                shineColor="#ffffff"
-                spread={120}
-                direction="left"
-                yoyo={false}
-                pauseOnHover={false}
-                disabled={false}
-              />
+              <h1 className="opening-title">
+                <span>Welcome To</span>
+                <strong>My Portfolio</strong>
+              </h1>
+
+              <div className="opening-domain">
+                <span>◎</span>
+                <span>frhnn.com</span>
+              </div>
+
+              <div className="opening-loader">
+                <div className="opening-loader-fill" />
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -209,21 +249,21 @@ function App() {
           <button
             className="brand"
             onClick={() => goTo("home")}
+            aria-label="Go to home"
           >
-            <span className="brand-mark">F</span>
+            <span className="brand-mark">
+              <img src={profileImage} alt="frhnn" />
+            </span>
+
             <span>frhnn</span>
           </button>
 
           <nav
-            className={
-              menuOpen ? "nav-links open" : "nav-links"
-            }
+            className={menuOpen ? "nav-links open" : "nav-links"}
+            aria-label="Main navigation"
           >
-            {nav.map((item) => (
-              <button
-                key={item}
-                onClick={() => goTo(item)}
-              >
+            {navItems.map((item) => (
+              <button key={item} onClick={() => goTo(item)}>
                 {item}
               </button>
             ))}
@@ -233,7 +273,7 @@ function App() {
             className="menu-button"
             aria-label="Toggle navigation"
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => setMenuOpen((value) => !value)}
           >
             <span />
             <span />
@@ -243,23 +283,13 @@ function App() {
 
         <main>
           {/* HOME */}
-          <section
-            id="home"
-            className="hero page-section"
-          >
+          <section id="home" className="hero page-section">
             <div className="hero-copy">
-              <div
-                className="hero-topline"
-                data-aos="fade-up"
-              >
+              <div className="hero-topline" data-aos="fade-up">
                 <i />
               </div>
 
-              <p
-                className="eyebrow"
-                data-aos="fade-up"
-                data-aos-delay="80"
-              >
+              <p className="eyebrow" data-aos="fade-up" data-aos-delay="80">
                 WEB DEVELOPMENT / CREATIVE BUILDING
               </p>
 
@@ -299,10 +329,9 @@ function App() {
                 data-aos="fade-up"
                 data-aos-delay="210"
               >
-                Gw membangun website dan aplikasi dengan
-                fokus pada tampilan modern, fungsi yang jelas,
-                interaksi yang halus, dan pengalaman pengguna
-                yang nyaman.
+                Gw membangun website dan aplikasi dengan fokus pada tampilan
+                modern, fungsi yang jelas, interaksi yang halus, dan pengalaman
+                pengguna yang nyaman.
               </p>
 
               <div
@@ -336,31 +365,19 @@ function App() {
             </div>
 
             <div
-              className="lanyard-slot"
+              className="lottie-slot"
               data-aos="fade-in"
               data-aos-delay="150"
             >
-              <Lanyard
-                position={[0, 0, 20]}
-                gravity={[0, -40, 0]}
-                frontImage={profileImage}
-              />
+              <GdscLottie />
             </div>
           </section>
 
           {/* ABOUT */}
-          <section
-            id="about"
-            className="section page-section"
-          >
-            <div
-              className="section-head"
-              data-aos="fade-up"
-            >
+          <section id="about" className="section page-section">
+            <div className="section-head" data-aos="fade-up">
               <div>
-                <p className="eyebrow">
-                  A LITTLE ABOUT ME
-                </p>
+                <p className="eyebrow">A LITTLE ABOUT ME</p>
 
                 <h2>
                   Hello, I'm <span>Farhan.</span>
@@ -374,22 +391,18 @@ function App() {
                 data-aos="fade-up"
                 data-aos-delay="80"
               >
-                <span className="panel-label">
-                  PROFILE
-                </span>
+                <span className="panel-label">PROFILE</span>
 
                 <p>
-                  Nama gw Farhan. Gw seorang pelajar yang
-                  tertarik sama web development, UI, coding,
-                  dan teknologi kreatif. Website ini jadi
-                  ruang buat nyimpen project, eksperimen,
-                  dan perkembangan yang gw kerjain.
+                  Nama gw Farhan. Gw seorang pelajar yang tertarik sama web
+                  development, UI, coding, dan teknologi kreatif. Website ini
+                  jadi ruang buat nyimpen project, eksperimen, dan perkembangan
+                  yang gw kerjain.
                 </p>
 
                 <p>
-                  Gw masih terus belajar. Jadi portfolio ini
-                  memang dibuat untuk tumbuh bareng project
-                  berikutnya.
+                  Gw masih terus belajar. Jadi portfolio ini memang dibuat untuk
+                  tumbuh bareng project berikutnya.
                 </p>
               </article>
 
@@ -401,9 +414,7 @@ function App() {
                 >
                   <span>FOCUS</span>
                   <strong>Web Development</strong>
-                  <small>
-                    Frontend · UI · Interactive web
-                  </small>
+                  <small>Frontend · UI · Interactive web</small>
                 </article>
 
                 <article
@@ -413,9 +424,7 @@ function App() {
                 >
                   <span>APPROACH</span>
                   <strong>Build / Break / Learn</strong>
-                  <small>
-                    Eksperimen sampai ketemu solusi.
-                  </small>
+                  <small>Eksperimen sampai ketemu solusi.</small>
                 </article>
               </div>
             </div>
@@ -426,18 +435,12 @@ function App() {
             id="showcase"
             className="section page-section showcase-section"
           >
-            <div
-              className="section-head"
-              data-aos="fade-up"
-            >
+            <div className="section-head showcase-heading" data-aos="fade-up">
               <div>
-                <p className="eyebrow">
-                  PORTFOLIO SHOWCASE
-                </p>
+                <p className="eyebrow">PORTFOLIO SHOWCASE</p>
 
                 <h2>
-                  Projects, certificates &{" "}
-                  <span>tech stack.</span>
+                  Projects, certificates & <span>tech stack.</span>
                 </h2>
               </div>
             </div>
@@ -469,99 +472,124 @@ function App() {
                 ))}
               </div>
 
-              <div className="showcase-content">
-                {showcaseTab === "projects" && (
-                  <div className="project-list showcase-panel">
-                    {projects.map((project) => (
-                      <article
-                        className="project-row"
-                        key={project.title}
-                      >
-                        <div className="project-main">
-                          <span className="project-type">
-                            {project.type}
-                          </span>
+              <PulsatingBorder
+                colors={["#286eff", "#8b5cf6", "#22d3ee"]}
+                speed={1}
+                radius={25}
+                thickness={3}
+                softness={50}
+                intensity={50}
+                bloom={70}
+                spread={20}
+              >
+                <div className="showcase-content">
+                  {/* PROJECTS */}
+                  {showcaseTab === "projects" && (
+                    <div className="project-list showcase-panel">
+                      {projects.map((project) => (
+                        <article className="project-card" key={project.title}>
+                          <div className="project-preview">
+                            {project.image ? (
+                              <img
+                                src={project.image}
+                                alt={project.title}
+                                className="project-preview-image"
+                              />
+                            ) : (
+                              <>
+                                <div className="project-preview-grid" />
 
-                          <h3>{project.title}</h3>
+                                <span className="project-preview-label">
+                                  PROJECT
+                                </span>
 
-                          <p>{project.description}</p>
-
-                          <div className="project-tags">
-                            {project.tech.map((tech) => (
-                              <span key={tech}>
-                                {tech}
-                              </span>
-                            ))}
+                                <span className="project-preview-title">
+                                  {project.title}
+                                </span>
+                              </>
+                            )}
                           </div>
-                        </div>
 
-                        <span className="project-arrow">
-                          ↗
-                        </span>
-                      </article>
-                    ))}
-                  </div>
-                )}
+                          <div className="project-card-content">
+                            <span className="project-type">{project.type}</span>
 
-                {showcaseTab === "certificates" && (
-                  <div className="certificate-grid showcase-panel">
-                    {certificates.map((image, index) => (
-                      <article
-                        className="certificate-card"
-                        key={index}
-                      >
-                        <div className="certificate-image">
-                          <img
-                            src={image}
-                            alt={`Sertifikat ${index + 1}`}
-                          />
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                )}
+                            <h3>{project.title}</h3>
 
-                {showcaseTab === "stack" && (
-                  <div className="stack-grid showcase-panel">
-                    {techStack.map(([name, desc, icon]) => (
-                      <article
-                        className="stack-item"
-                        key={name}
-                      >
-                        <div className="stack-logo">
-                          <img src={icon} alt="" aria-hidden="true" />
-                        </div>
-                        <div className="stack-info">
-                          <strong>{name}</strong>
-                          <small>{desc}</small>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                )}
-              </div>
+                            <p>{project.description}</p>
+
+                            <div className="project-tags">
+                              {project.tech.map((tech) => (
+                                <span key={tech}>{tech}</span>
+                              ))}
+                            </div>
+
+                            <span className="project-arrow">↗</span>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* CERTIFICATES */}
+                  {showcaseTab === "certificates" && (
+                    <div className="certificate-grid showcase-panel">
+                      {certificates.map((image, index) => (
+                        <button
+                          type="button"
+                          className="certificate-card"
+                          key={index}
+                          onClick={() => setSelectedCertificate(image)}
+                          aria-label={`Open certificate ${index + 1}`}
+                        >
+                          <div className="certificate-image">
+                            <img src={image} alt={`Sertifikat ${index + 1}`} />
+                          </div>
+
+                          <div className="certificate-info">
+                            <span>
+                              Certificate {String(index + 1).padStart(2, "0")}
+                            </span>
+
+                            <strong>View Certificate</strong>
+
+                            <span className="certificate-arrow">↗</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* TECH STACK */}
+                  {showcaseTab === "stack" && (
+                    <div className="stack-grid showcase-panel">
+                      {techStack.map(([name, icon]) => (
+                        <article className="stack-item" key={name}>
+                          <div className="stack-logo">
+                            <img src={icon} alt={`${name} logo`} />
+                          </div>
+
+                          <strong className="stack-name">{name}</strong>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </PulsatingBorder>
             </div>
           </section>
 
           {/* CONTACT */}
-          <section
-            id="contact"
-            className="contact-section page-section"
-          >
-            <div
-              className="contact-copy"
-              data-aos="fade-up"
-            >
+          <section id="contact" className="contact-section page-section">
+            <div className="contact-copy" data-aos="fade-up">
               <p className="eyebrow">CONTACT</p>
 
               <h2>
-                Let's make something{" "}
-                <span>interesting.</span>
+                Let's make something <span>interesting.</span>
               </h2>
 
               <p>
-                Project, kolaborasi, atau sekadar ngobrol
-                soal web dan teknologi.
+                Project, kolaborasi, atau sekadar ngobrol soal web dan
+                teknologi.
               </p>
             </div>
 
@@ -576,18 +604,14 @@ function App() {
                   data-aos="fade-up"
                   data-aos-delay={index * 70}
                 >
-                  <span className="contact-icon">
-                    {social.icon}
-                  </span>
+                  <span className="contact-icon">{social.icon}</span>
 
                   <div>
                     <small>{social.label}</small>
                     <strong>{social.value}</strong>
                   </div>
 
-                  <span className="contact-arrow">
-                    ↗
-                  </span>
+                  <span className="contact-arrow">↗</span>
                 </a>
               ))}
             </div>
@@ -595,15 +619,45 @@ function App() {
         </main>
 
         <footer>
-          <span>
-            © {new Date().getFullYear()} frhnn
-          </span>
+          <span>© {new Date().getFullYear()} frhnn</span>
 
-          <span>
-            React · Vite · Motion · GSAP
-          </span>
+          <span>React · Vite · Motion · GSAP</span>
         </footer>
       </div>
+
+      {/* CERTIFICATE MODAL */}
+      <AnimatePresence>
+        {selectedCertificate && (
+          <motion.div
+            className="certificate-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setSelectedCertificate(null)}
+          >
+            <button
+              type="button"
+              className="certificate-close"
+              onClick={() => setSelectedCertificate(null)}
+              aria-label="Close certificate"
+            >
+              ×
+            </button>
+
+            <motion.div
+              className="certificate-modal-content"
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img src={selectedCertificate} alt="Certificate preview" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
