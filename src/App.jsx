@@ -1,3 +1,7 @@
+import myhubImage from "./components/projects/myhub1.png";
+import portfolioImage from "./components/projects/portfolio.png";
+import kelasImage from "./components/projects/kelas1.png";
+
 import sertifikat1 from "./certificates/certificates1.jpeg";
 import sertifikat2 from "./certificates/certificates2.jpeg";
 import sertifikat3 from "./certificates/certificates3.jpeg";
@@ -25,7 +29,7 @@ const projects = [
     description:
       "Personal hub untuk berbagai kebutuhan sehari-hari dengan fokus pada UI yang rapi dan interaktif.",
     tech: ["HTML", "CSS", "JavaScript"],
-    image: "src/components/projects/myhub1.png",
+    image: myhubImage
   },
   {
     title: "Portfolio",
@@ -33,7 +37,7 @@ const projects = [
     description:
       "Lihat berbagai project, pencapaian, dan teknologi yang saya gunakan untuk membangun pengalaman digital yang modern dan interaktif.",
     tech: ["React", "Vite", "Motion"],
-    image: "src/components/projects/portfolio.png",
+    image: portfolioImage
   },
   {
     title: "X PPLG 1",
@@ -41,7 +45,7 @@ const projects = [
     description:
       "Website informasi kelas untuk struktur, anggota, jadwal, galeri, dan media sosial.",
     tech: ["HTML", "CSS", "JavaScript"],
-    image: "src/components/projects/kelas1.png",
+    image: kelasImage
   },
 ];
 
