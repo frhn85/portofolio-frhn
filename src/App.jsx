@@ -13,7 +13,6 @@ import gdscAnimation from "./assets/GDSC-Modules.json";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import PulsatingBorder from "./components/PulsatingBorder";
 
 import TextType from "./components/TextType";
 
@@ -471,17 +470,7 @@ function App() {
                   </button>
                 ))}
               </div>
-
-              <PulsatingBorder
-                colors={["#286eff", "#8b5cf6", "#22d3ee"]}
-                speed={1}
-                radius={25}
-                thickness={3}
-                softness={50}
-                intensity={50}
-                bloom={70}
-                spread={20}
-              >
+              
                 <div className="showcase-content">
                   {/* PROJECTS */}
                   {showcaseTab === "projects" && (
@@ -574,7 +563,6 @@ function App() {
                     </div>
                   )}
                 </div>
-              </PulsatingBorder>
             </div>
           </section>
 
