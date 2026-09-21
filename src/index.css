@@ -2434,31 +2434,3 @@ footer {
   display: block;
   border-radius: 18px;
 }
-
-.pulsating-border-wrapper {
-    position: relative;
-    width: 100%;
-    border-radius: 28px;
-    overflow: visible;
-    padding: 3px;
-}
-
-.pulsating-border-content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    min-height: 100%;
-    border-radius: 25px;
-    background: rgba(7, 11, 22, 0.92);
-    overflow: hidden;
-}
-
-.pulsating-border-content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    border-radius: 28px;
-    background: rgba(7, 11, 22, 0.72);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-}
