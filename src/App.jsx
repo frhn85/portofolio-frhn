@@ -8,12 +8,16 @@ import sertifikat7 from "./certificates/certificates7.jpeg";
 import sertifikat8 from "./certificates/certificates8.jpeg";
 import sertifikat9 from "./certificates/certificates9.jpeg";
 
-import profileImage from "./assets/frhn5.jpeg";
+import profileImage from "./assets/logo.png";
+import potoImage from "./assets/frhn2.jpeg";
 import gdscAnimation from "./assets/GDSC-Modules.json";
+
+import projectMyhub from "./components/projects/myhub1.png";
+import projectPortfolio from "./components/projects/portfolio.png";
+import projectKelas from "./components/projects/kelas1.png";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import PulsatingBorder from "./components/PulsatingBorder";
 
 import TextType from "./components/TextType";
 
@@ -26,7 +30,7 @@ const projects = [
     description:
       "Personal hub untuk berbagai kebutuhan sehari-hari dengan fokus pada UI yang rapi dan interaktif.",
     tech: ["HTML", "CSS", "JavaScript"],
-    image: "src/components/projects/myhub1.png",
+    image: projectMyhub,
   },
   {
     title: "Portfolio",
@@ -34,7 +38,7 @@ const projects = [
     description:
       "Lihat berbagai project, pencapaian, dan teknologi yang saya gunakan untuk membangun pengalaman digital yang modern dan interaktif.",
     tech: ["React", "Vite", "Motion"],
-    image: "src/components/projects/portfolio.png",
+    image: projectPortfolio,
   },
   {
     title: "X PPLG 1",
@@ -42,7 +46,7 @@ const projects = [
     description:
       "Website informasi kelas untuk struktur, anggota, jadwal, galeri, dan media sosial.",
     tech: ["HTML", "CSS", "JavaScript"],
-    image: "src/components/projects/kelas1.png",
+    image: projectKelas,
   },
 ];
 
@@ -374,59 +378,41 @@ function App() {
           </section>
 
           {/* ABOUT */}
-          <section id="about" className="section page-section">
-            <div className="section-head" data-aos="fade-up">
-              <div>
-                <p className="eyebrow">A LITTLE ABOUT ME</p>
+          <section id="about" className="section page-section about-section">
+            <div className="about-heading">
+              <h2 className="about-title-normal">
+                About <span>Me</span>
+              </h2>
 
-                <h2>
-                  Hello, I'm <span>Farhan.</span>
-                </h2>
+              <p>✦ Transforming ideas into digital experiences ✦</p>
+            </div>
+
+            {/* LOGO */}
+            <div className="about-visual">
+              <div className="about-orbit orbit-one" />
+              <div className="about-orbit orbit-two" />
+
+              <div className="about-photo-frame">
+                <div className="about-photo-glow" />
+                <img src={potoImage} alt="FRHN" />
               </div>
             </div>
 
-            <div className="about-layout">
-              <article
-                className="intro-panel"
-                data-aos="fade-up"
-                data-aos-delay="80"
-              >
-                <span className="panel-label">PROFILE</span>
+            {/* HELLO I'M FRHN */}
+            <div className="about-copy">
+              <p className="about-greeting">Hello, I'm</p>
 
-                <p>
-                  Nama gw Farhan. Gw seorang pelajar yang tertarik sama web
-                  development, UI, coding, dan teknologi kreatif. Website ini
-                  jadi ruang buat nyimpen project, eksperimen, dan perkembangan
-                  yang gw kerjain.
-                </p>
+              <h3>frhn</h3>
 
-                <p>
-                  Gw masih terus belajar. Jadi portfolio ini memang dibuat untuk
-                  tumbuh bareng project berikutnya.
-                </p>
-              </article>
+              <p>
+                I'm a Full Stack Developer who enjoys building modern,
+                interactive, and useful digital experiences.
+              </p>
 
-              <div className="about-side">
-                <article
-                  className="mini-panel"
-                  data-aos="fade-up"
-                  data-aos-delay="140"
-                >
-                  <span>FOCUS</span>
-                  <strong>Web Development</strong>
-                  <small>Frontend · UI · Interactive web</small>
-                </article>
-
-                <article
-                  className="mini-panel"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <span>APPROACH</span>
-                  <strong>Build / Break / Learn</strong>
-                  <small>Eksperimen sampai ketemu solusi.</small>
-                </article>
-              </div>
+              <blockquote className="about-quote">
+                <span>“</span>
+                <p>Build it, ship it, own it — no cloud, no limits.</p>
+              </blockquote>
             </div>
           </section>
 
@@ -472,109 +458,101 @@ function App() {
                 ))}
               </div>
 
-              <PulsatingBorder
-                colors={["#286eff", "#8b5cf6", "#22d3ee"]}
-                speed={1}
-                radius={25}
-                thickness={3}
-                softness={50}
-                intensity={50}
-                bloom={70}
-                spread={20}
-              >
-                <div className="showcase-content">
-                  {/* PROJECTS */}
-                  {showcaseTab === "projects" && (
-                    <div className="project-list showcase-panel">
-                      {projects.map((project) => (
-                        <article className="project-card" key={project.title}>
-                          <div className="project-preview">
-                            {project.image ? (
-                              <img
-                                src={project.image}
-                                alt={project.title}
-                                className="project-preview-image"
-                              />
-                            ) : (
-                              <>
-                                <div className="project-preview-grid" />
+              <div className="showcase-content">
+                {/* PROJECTS */}
+                {showcaseTab === "projects" && (
+                  <div className="project-list showcase-panel">
+                    {projects.map((project) => (
+                      <article className="project-card" key={project.title}>
+                        <div className="project-preview">
+                          {project.image ? (
+                            <img
+                              src={project.image}
+                              alt={project.title}
+                              className="project-preview-image"
+                            />
+                          ) : (
+                            <>
+                              <div className="project-preview-grid" />
 
-                                <span className="project-preview-label">
-                                  PROJECT
-                                </span>
+                              <span className="project-preview-label">
+                                PROJECT
+                              </span>
 
-                                <span className="project-preview-title">
-                                  {project.title}
-                                </span>
-                              </>
-                            )}
+                              <span className="project-preview-title">
+                                {project.title}
+                              </span>
+                            </>
+                          )}
+                        </div>
+
+                        <div className="project-card-content">
+                          <span className="project-type">{project.type}</span>
+
+                          <h3>{project.title}</h3>
+
+                          <p>{project.description}</p>
+
+                          <div className="project-tags">
+                            {project.tech.map((tech) => (
+                              <span key={tech}>{tech}</span>
+                            ))}
                           </div>
 
-                          <div className="project-card-content">
-                            <span className="project-type">{project.type}</span>
+                          <span className="project-arrow">↗</span>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )}
 
-                            <h3>{project.title}</h3>
+                {/* CERTIFICATES */}
+                {showcaseTab === "certificates" && (
+                  <div className="certificate-grid showcase-panel">
+                    {certificates.map((image, index) => (
+                      <button
+                        type="button"
+                        className="certificate-card"
+                        key={index}
+                        onClick={() => setSelectedCertificate(image)}
+                        aria-label={`Open certificate ${index + 1}`}
+                      >
+                        <div className="certificate-image">
+                          <img
+                            src={image}
+                            alt={`Sertifikat ${index + 1}`}
+                          />
+                        </div>
 
-                            <p>{project.description}</p>
+                        <div className="certificate-info">
+                          <span>
+                            Certificate {String(index + 1).padStart(2, "0")}
+                          </span>
 
-                            <div className="project-tags">
-                              {project.tech.map((tech) => (
-                                <span key={tech}>{tech}</span>
-                              ))}
-                            </div>
+                          <strong>View Certificate</strong>
 
-                            <span className="project-arrow">↗</span>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  )}
+                          <span className="certificate-arrow">↗</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-                  {/* CERTIFICATES */}
-                  {showcaseTab === "certificates" && (
-                    <div className="certificate-grid showcase-panel">
-                      {certificates.map((image, index) => (
-                        <button
-                          type="button"
-                          className="certificate-card"
-                          key={index}
-                          onClick={() => setSelectedCertificate(image)}
-                          aria-label={`Open certificate ${index + 1}`}
-                        >
-                          <div className="certificate-image">
-                            <img src={image} alt={`Sertifikat ${index + 1}`} />
-                          </div>
+                {/* TECH STACK */}
+                {showcaseTab === "stack" && (
+                  <div className="stack-grid showcase-panel">
+                    {techStack.map(([name, icon]) => (
+                      <article className="stack-item" key={name}>
+                        <div className="stack-logo">
+                          <img src={icon} alt={`${name} logo`} />
+                        </div>
 
-                          <div className="certificate-info">
-                            <span>
-                              Certificate {String(index + 1).padStart(2, "0")}
-                            </span>
-
-                            <strong>View Certificate</strong>
-
-                            <span className="certificate-arrow">↗</span>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* TECH STACK */}
-                  {showcaseTab === "stack" && (
-                    <div className="stack-grid showcase-panel">
-                      {techStack.map(([name, icon]) => (
-                        <article className="stack-item" key={name}>
-                          <div className="stack-logo">
-                            <img src={icon} alt={`${name} logo`} />
-                          </div>
-
-                          <strong className="stack-name">{name}</strong>
-                        </article>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </PulsatingBorder>
+                        <strong className="stack-name">{name}</strong>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </section>
 
