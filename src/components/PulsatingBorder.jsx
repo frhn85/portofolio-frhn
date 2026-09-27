@@ -77,7 +77,7 @@ export default function PulsatingBorder({
               top: r.top,
               w,
               h,
-            }
+            },
       );
     };
 
@@ -113,7 +113,7 @@ export default function PulsatingBorder({
 
   const room = Math.min(
     MAX_ROOM,
-    Math.ceil(GLOW_ROOM * Math.min(worldW, worldH))
+    Math.ceil(GLOW_ROOM * Math.min(worldW, worldH)),
   );
 
   const bleed = spread + room;
@@ -166,15 +166,10 @@ export default function PulsatingBorder({
   ) : null;
 
   return (
-    <div
-      ref={hostRef}
-      className={`pulsating-border-wrapper ${className}`}
-    >
+    <div ref={hostRef} className={`pulsating-border-wrapper ${className}`}>
       {escapes ? createPortal(layer, portalTarget) : layer}
 
-      <div className="pulsating-border-content">
-        {children}
-      </div>
+      <div className="pulsating-border-content">{children}</div>
     </div>
   );
 }
